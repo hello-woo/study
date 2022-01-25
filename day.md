@@ -11,8 +11,11 @@
 --------------------------------------
 
 IEEE transactions on industrial informatics
+
 2022/01/17 submited Awaiting Co-EIC Assignment
+
 2022/01/21 Awaiting AE assignment
+
 2022/01/25 Assigning Reviewers
 
 # 2022/01/23
@@ -37,4 +40,5 @@ git push
 
 # 2022/01/25
 完成codetop 215、25和手撕快速排序三道题
+
 睡到12点，玩了一下午吃鸡，晚上看开端大结局，写了三道题
