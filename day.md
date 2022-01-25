@@ -9,7 +9,7 @@
 （4） 按照codetop每日刷题3道
 
 --------------------------------------
-
+zzc 密码：12345678
 IEEE transactions on industrial informatics
 
 2022/01/17 submited Awaiting Co-EIC Assignment
@@ -24,9 +24,11 @@ IEEE transactions on industrial informatics
 git新建文件夹并且push过程
 ```cpp
 git init 
-git add 
-git remote add origin 
-git push 
+git add Read.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:hello-woo/myhttpserver.git 
+git push -u origin main
 ```
 ![image-20220123225957174](https://s2.loli.net/2022/01/23/YLiZlE6BV8PrSMX.png)
 
