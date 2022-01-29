@@ -77,3 +77,28 @@ ARP协议工作原理：实现了IP地址到MAC地址的转换，其工作原理
 完成以下三题打卡
 ![image-20220128225451501](https://s2.loli.net/2022/01/28/A2h9qLc8HY6QOty.png)
 吃完饭，中午写了每日一题，下午晚上追完开端，之后要看书补充操作系统数据库学习，还有项目介绍没看完，科研也没有进展.
+
+# 2022/01/29 
+![image-20220129215658313](https://s2.loli.net/2022/01/29/PmB4fNIv1z5abAX.png)
+完成下面三道题
+![image-20220129221651457](https://s2.loli.net/2022/01/29/JWreAOnMsufvUBm.png)
+
+和每日一题 多源BFS的应用，碰到水域加入到队列中，
+```cpp
+queue<pair<int,int>>que;
+int dir[4][2]={0,1,1,0,0,-1,-1,0};
+if(grid[i][j] == 1) que.push(make_pair(i,j));
+while(!que.empty()){
+    auto p = que.front();
+    que.pop();
+    for(int i = 0;i < 4; i++){
+        int  x0 = p.first + dir[i][0];
+        int y0 = p.second + dir[i][1];
+        if(x0 >= 0&& x0 < Row && y0 >= 0 && y0 < Col  && vis[x0][y0] = false){
+            vis[x0][y0] = true;
+            ans[x0][y0] = ans[p.first][p.second] + 1;
+            que.push(make_pair(x0,y0));
+        }
+    }
+}
+```
