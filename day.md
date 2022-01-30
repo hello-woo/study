@@ -102,3 +102,68 @@ while(!que.empty()){
     }
 }
 ```
+
+# 2022/01/30
+完成codetop 3题以及每日一题
+其中大整数加法，和旋转数组找target和最长回文串
+
+（1）大整数加法
+```cpp
+string add(string num1,string num2){
+    int i = num1.size() - 1;
+    int j = num2.size() - 1;
+    int carry = 0;
+    string ans;
+    while(i >=0 || j >= 0 || carry){
+        int a = (i >= 0)? num1[i] - '0' : 0;
+        int b = (j >= 0) ? num2[j] - '0' : 0;
+        int curVal = a + b + carry;
+        carry = curVal % 10;
+        ans += curVal / 10 + '0;
+    }
+    reverse(ans.bengin(),ans.end());
+    return ans;
+} 
+```
+
+(2）旋转数组，可以分成四段，如果mid的值大于nums[0]，说明在前半段，这其中分为target在nums[0]和nums[mid]中间和其他
+```cpp
+if(target == nums[mid]) return mid;
+if(nums[0] < nums[mid]){
+    if(nums[0] <= tagert && target <= nums[mid]){
+        right = mid - 1;
+    }else{
+        left = mid + 1;
+    }
+}else{
+    if(nums[mid] <= target && target <= nums[nums.size() - 1]){
+        left = mid + 1;
+    }else{
+        right = mid - 1;
+    }
+}
+```
+
+（3）最长回文子串
+
+思路：利用动态规划预处理字符串，找出回文子串；
+```cpp
+string maxlenhuiwen(string str){
+    int n = str.size();
+    int maxlen,left,right;
+    vector<vector<bool>>dp(n,vector<bool>(n,false));
+    for(int i = n -1 ;i >=0;i--){
+        for(int j = i ;j < n ;j ++){
+            if(s[i] == s[j] && ( j- i <=1 || dp[i+1][j-1] == true)){
+                dp[i][j] = true;
+            }
+            if(dp[i][j] == true && j- i + 1 > maxlen){
+                left = i;
+                right = j;
+                maxlen = right - left + 1;
+            }
+        }
+    }
+    return str.substr(left,maxlen);
+}
+```
