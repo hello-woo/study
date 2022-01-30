@@ -10,6 +10,7 @@
 
 --------------------------------------
 zzc 密码：12345678
+
 IEEE transactions on industrial informatics
 
 2022/01/17 submited Awaiting Co-EIC Assignment
@@ -17,6 +18,8 @@ IEEE transactions on industrial informatics
 2022/01/21 Awaiting AE assignment
 
 2022/01/25 Assigning Reviewers
+
+2022/01/30 	Assign additional Reviewers
 
 # 2022/01/23
 通过PLC完成了电机x,y轴的点动前进和后退
