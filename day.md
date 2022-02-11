@@ -21,6 +21,10 @@ IEEE transactions on industrial informatics
 
 2022/01/30 	Assign additional Reviewers
 
+2022/02/05 Assigning Reviewers
+
+2022/02/11 Assign additional Reviewers
+
 # 2022/01/23
 通过PLC完成了电机x,y轴的点动前进和后退
 
@@ -168,5 +172,35 @@ string maxlenhuiwen(string str){
         }
     }
     return str.substr(left,maxlen);
+}
+```
+
+# 2022/02/11
+上午睡到11点；下午和老师交流延期毕业时间问题，没想到老师可以让我提前毕业，但是自己没有论文产出，还是自己不争气，晚上完成以下三题并且打卡每日一题；
+后面继续加油！
+![image-20220212001403364](https://s2.loli.net/2022/02/12/u379VoCt8JUlBSh.png)
+（1）全排列问题：不同于组合问题，不需要startIndex,但是需要used数组，标记每个字符是否被用到过！，每轮都是从0开始;需要一个path数组和一个记录答案得数组。
+
+```cpp
+vector<vector<int>>ans;
+vector<int>path;
+void dfs(vector<int>& nums,vector<bool>&used){
+    if(path.size() == nums.size()){
+        ans.push_back(path);
+        return;
+    }
+    for(int i = 0 ;i < nums.size();i++){
+        if(used[i]) continue;
+        used[i] = true;
+        path.push_back(nums[i]);
+        dfs(nums,used);
+        used[i] = false;
+        path.pop_back();
+    }
+}
+vector<vector<int>>pumute(vector<int>&nums){
+    vector<bool>used(nums.size(),false);
+    dfs(nums,used);
+    return ans;
 }
 ```
