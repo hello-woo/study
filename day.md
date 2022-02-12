@@ -204,3 +204,19 @@ vector<vector<int>>pumute(vector<int>&nums){
     return ans;
 }
 ```
+
+# 2022/02/12
+
+(1)合并两个升序链表注意事项
+
+(2)合并K个升序链表
+
+(3)K路归并排序（常考）
+
+利用优先队列进行排序
+
+
+完成codetop以下三题
+![image-20220212233423878](https://s2.loli.net/2022/02/12/zU6bvB1EfdRW3lp.png)
+
+其中第一题有困难，最后一题需要尝试O(NlogN)的解法
