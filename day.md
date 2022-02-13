@@ -222,3 +222,8 @@ vector<vector<int>>pumute(vector<int>&nums){
 ![image-20220212233423878](https://s2.loli.net/2022/02/12/zU6bvB1EfdRW3lp.png)
 
 其中第一题有困难，最后一题需要尝试O(NlogN)的解法
+
+# 2022_02_13
+(1) 完成黑马程序员MySQL数据库入门到精通的p1-p32
+
+(2) 完成每日一题打卡，后续补充codetop3题打卡
