@@ -1250,3 +1250,1272 @@ curdate,curtime,now,year,month,day,date_add,datediff
 if,ifnull,case[...]when ... then ... else... end;
 ```
 
+## p32 约束-概述
+
+概述
+
+1. 概念:约束是作用于表中字段上的规则，用于限制存储在表中的数据
+2. 目的：保证数据库中的数据的正确，有效性和完整性。
+
+3. 分类
+
+![image-20220214145920777](https://s2.loli.net/2022/02/14/dMPuI5psGqDrzwQ.png)
+
+注意：约束是作用于表中的字段上的，可以在创建表/修改表的时候添加约束。
+
+## p33-约束-演示
+
+![image-20220214150449452](https://s2.loli.net/2022/02/14/z5WH3fJeALEQVKR.png)
+
+```sql
+-- 约束演示
+create database ithm;
+show databases ;
+use ithm;
+create  table user(
+    id int primary key auto_increment comment '主键',-- 主键并且自动增长
+    name varchar(10)  not null unique comment '姓名',
+    age int check( age > 0 && age <= 120) comment '年龄',
+    status char(1) default '1' comment  '状态',
+    gender char(1) comment '性别'
+)comment  '用户表';
+
+-- 插入数据
+insert into user(name, age, status,gender)  values ('Tom1',19,'1','男'),('Tom2',25,'0','男');
+insert into user(name, age, status,gender)  values ('Tom3',12,'1','男'); -- 重复插入不成功，主键也自增
+```
+
+## p34 约束-外键约束
+
+约束-外键约束
+
+概念：外键用来让两张表之间建立连接，从而保证数据的一致性和完整性。
+
+![image-20220214152113700](https://s2.loli.net/2022/02/14/FTNLXo5sCy7rb3j.png)
+
+有外键的称为子表，
+
+注意：目前上述两张表，在数据库层面，并未建立外键关联，所以是无法保证数据的一致性和完整性的。
+
+语法
+
+```sql
+1.添加外键
+create table 表名(
+    字段名	数据类型
+    ...
+    [comment] [外键名称]foreign key(外键字段名) references 主表(主表列名)
+);
+alter table 表名 add constraint 外键名称 foreign key(外键字段名) references 主表(主表列名)
+
+
+2.删除外键
+alter table 表名 drop foreign key 外键名称;
+```
+
+演示
+
+```sql
+-- 约束（外键）
+-- 准备数据
+create table dept(
+    id int auto_increment  primary key comment 'ID',
+    name varchar(50) not null comment '部门名称'
+)comment '部门表';
+
+insert into dept (id, name)
+values (1,'研发部'),(2,'市场部'),(3,'财务部'),(4,'销售部'),(5,'总经办');
+
+create table emp(
+    id int auto_increment primary key comment 'ID',
+    name varchar(50) not null comment '姓名',
+    age int comment '年龄',
+    job varchar(20) comment '职位',
+    salary int comment '薪资',
+    entrydate date comment '入职时间',
+    manager int comment '直属领导ID',
+    dept_id int comment  '部门ID'
+)comment '员工表';
+
+insert into emp (id, name, age, job, salary, entrydate, manager, dept_id)
+values (1,'金庸',66,'总裁',20000,'2010-01-01',null,5),(2,'金庸',66,'总裁',20000,'2009-01-01',1,1),
+(3,'金f庸',66,'总裁',20000,'2011-01-01',2,1),(4,'金gd庸',66,'总裁',20000,'2001-01-09',2,1);
+
+-- 添加外键
+alter table emp add constraint fk_emp_dept_id foreign key(dept_id) references dept(id);
+
+-- 删除外键
+alter table emp drop foreign key fk_emp_dept_id;
+```
+
+emp表：
+
+![](https://s2.loli.net/2022/02/14/zMi9SHZYGjpLQwE.png)
+
+dept表
+
+![image-20220214155524663](https://s2.loli.net/2022/02/14/2elJ7TKfp6iUXtL.png)
+
+添加外键之后
+
+![image-20220214155615638](https://s2.loli.net/2022/02/14/YUfLNlaMH7tZhw4.png)
+
+## p35 约束-外键删除更新行为
+
+外键约束
+
+- 删除/更新行为
+
+![image-20220214154403758](https://s2.loli.net/2022/02/14/Di8Y45eINLoqEAX.png)
+
+语法
+
+```sql
+alter table 表名 add constraint 外键名称 foreign key(外键字段名) references 主表名(主表字段名) on update 【cascade】 on delete 【cascade】;
+```
+
+演示
+
+```sql
+-- 外键的删除和更新行为
+
+-- 先删除以上的外键，删除外键
+alter table emp drop foreign key fk_emp_dept_id;
+
+-- 增加约束cascade行为，一起变化
+alter table emp add constraint fk_emp_dept_id foreign key(dept_id) references dept(id) on update cascade on delete  cascade ;
+```
+
+将研发部改为6后，此时dept表为
+
+![image-20220214155814124](https://s2.loli.net/2022/02/14/xNqB1lvXbjr9U8S.png)
+
+emp表为：
+
+![image-20220214155903822](https://s2.loli.net/2022/02/14/d3oKmy1JSrnteF9.png)
+
+## p36 约束-小结
+
+1. 非空约束 ：`not null`
+2. 唯一约束：`unique`
+3. 主键约束：`primary key`（自增，`auto_increment`)
+4. 默认约束：`default`
+5. 检查约束：`check`
+6. 外键约束：`foreign key`
+
+## p37 多表查询-多表关系介绍
+
+多表关系；多表查询概述；内连接；外连接；自连接；子查询；多表查询案例；
+
+表结构之间的练习，基本上分为三种：一对多（多对一）、多对多、一对一；
+
+- 一对多（多对一）
+
+（1）案列：部门与员工的关系
+
+（2）关系：一个部门对应多个员工，一个员工对应一个部门
+
+（3)实现：在多的一方建立外键，指向一的一方的主键
+
+![image-20220214161053788](https://s2.loli.net/2022/02/14/FrMznwIGck3CTUq.png)
+
+- 多对多
+
+（1）案例：学生和课程的关系
+
+（2）关系：一个学生可以选修多门课程，一门课程也可以供多个学生选择
+
+（3）实现：建立第三张中间表，中间表中至少包含两个外键，分别关联两方主键
+
+![image-20220214161242166](https://s2.loli.net/2022/02/14/pmnRGXTlLHuOCoY.png)
+
+
+
+```sql
+-- 多对多
+create table student(
+    id int auto_increment primary key comment '主键ID',
+    name varchar(10) comment '姓名',
+    no varchar(10) comment '学号'
+)comment '学生表';
+
+insert into student values (null,'dai','20000'),(null,'fs','2023244'),(null,'fasgsg','115312532'),
+                           (null,'fag','245235626');
+
+create table course(
+    id int auto_increment primary key comment '主键ID',
+    name varchar(10) comment '课程名称'
+)comment '课程表';
+
+insert into course values (null,'java'),(null,'php'),(null,'mysql'),(null,'hadoop');
+
+create table student_course(
+    id int auto_increment primary key comment '主键',
+    studentID int not null comment '学生ID',
+    courseID int not null comment '课程ID',
+    constraint fk_couresid foreign key (courseID) references course(id),
+    constraint fk_studentid foreign key (studentID) references student(id)
+)comment '学生课程中间表';
+
+insert into student_course
+values (null,1,1),(null,1,2),(null,1,3),(null,2,2),(null,2,3),(null,3,4);
+```
+
+![image-20220214162539144](https://s2.loli.net/2022/02/14/nHILor1RyZ4w8M9.png)
+
+- 一对一
+
+案列：用户与用户详情的关系
+
+关系：一对一关系，多用于单表拆分，将一张表的基础字段放在一张表中，其他详情字段放在另一张表中，以提升操作效率。
+
+**实现**：**在任意一方加入外键，关联另外一方的主键，并且设置外键为唯一的(`unique`)**
+
+![image-20220214162907401](https://s2.loli.net/2022/02/14/Ao4VSMi6Gyf39aW.png)
+
+拆分为以下：
+
+![image-20220214163009444](https://s2.loli.net/2022/02/14/HoaRidJfI4X7vCy.png)
+
+演示
+
+```sql
+-- 一对一
+create table tb_user(
+    id int auto_increment primary key comment '主键ID',
+    name varchar(10) comment '姓名',
+    age int comment '年龄',
+    gender char(1) comment '1:男，2:女',
+    phone char(11) comment '手机号'
+)comment '用户基本信息表';
+
+create table tb_user_edu(
+    id int auto_increment primary key comment '主键ID',
+    degree varchar(20) comment '学历',
+    major varchar(50) comment '专业',
+    primaryschool varchar(50) comment '小学',
+    middleschool varchar(50) comment '中学',
+    university varchar(50) comment '大学',
+    userid int unique comment '用户ID', -- 外键
+    constraint fk_userid foreign key (userid) references tb_user(id) -- 添加外键关联tb_user的主键
+)comment '用户教育信息表';
+
+insert into tb_user values (null,'tb','45','1','2432352525'),
+                           (null,'gs',43,'2','324252552'),
+                           (null,'gag',25,'1','34252365'),
+                           (null,'gag',20,'2','245263763');
+
+insert into tb_user_edu values (null,'本科','fs','fsfsgsg','fsfsfsf','fsgfsg',1),
+                               (null,'硕士','fs','gsgs','fsfsgsgsfsf','fsgdgfsg',2),
+                               (null,'博士','fs','fsfsgsg','fsfsfssff','fsgfsgsg',3),
+                               (null,'本科','fs','fsfsgsg','fsfsfsfcd','fsgfsgbf',4);
+```
+
+## p38 多表查询-概述
+
+多表查询概述
+
+- 概述：指从多张表中查询数据
+- 笛卡尔积：笛卡尔积是指在数学中，两个集合A集合和B集合的所有组合情况（**多表查询，要消除笛卡尔积**）
+
+```sql
+-- 多表查询 笛卡尔积
+select * from emp,dept where emp.dept_id = dept.id;
+```
+
+- 多表查询分类
+
+  - 连接查询
+
+  1. 内连接：相当于**查A,B交集**部分数据
+
+  2. 外连接
+
+     （1）左外连接：查询**左表**所有数据，以及两种表交集部分数据
+
+     （2）右外连接：查询**右表**左右数据，以及两种表交集部分数据
+
+  3. 自连接：当前表与自身连接查询，自连接必需使用表别名
+
+  - 子查询
+
+  
+
+## p39 多表查询-内连接
+
+连接查询 - 内连接
+
+**内连接查询的是两张表的交集部分**
+
+内连接查询语法
+
+- 隐式内连接
+
+```sql
+select 字段列表 from 表1，表2 where 条件...;
+```
+
+- 显示内连接
+
+```sql
+select 字段列表 from 表1[inner] join 表2 on 连接条件...;
+```
+
+演示：
+
+```sql
+-- 内连接
+-- 1. 查询每个员工的姓名，及关联部门的名称(隐式内连接实现）
+select emp.name, dept.name from emp ,dept where emp.dept_id = dept.id;
+
+select e.name,d.name from emp e ,dept d where e.dept_id = d.id;
+
+-- 2.查询每个员工的姓名，及关联部门的名称(显式内连接实现）
+select emp.name,dept.name from emp inner join dept on emp.dept_id = dept.id;
+```
+
+## p40 多表查询-外连接
+
+外连接
+
+（1）左外连接：查询**左表**所有数据，以及两种表交集部分数据
+
+```sql
+select 字段列表 from 表1 left [outer] join 表2 on 条件...;
+```
+
+相当于查询表1（左表）的所有数据 包含表1和表2交集部分的数据
+
+（2）右外连接：查询**右表**左右数据，以及两种表交集部分数据
+
+```sql
+select 字段列表 from 表1 right [outer] join 表2 on 条件...;
+```
+
+相当于查询表2（右表）的所有数据 包含表1和表2交集部分的数据
+
+案例演示
+
+```sql
+-- 1. 查询emp表中的所有数据，和对应的部门信息，左外连接查询
+select e.* ,d.name from emp e left outer join dept d on e.dept_id = d.id;
+
+-- 2. 查询dept表中的所有数据，和对应的员工信息（右外连接）
+select dept.* ,emp.* from emp right outer join dept on emp.dept_id = dept.id;
+
+-- 3. 查询dept表中的所有数据，和对应的员工信息（左外连接）
+select dept.*, emp.* from dept left outer join emp on dept.id = emp.dept_id;
+```
+
+## p41 -多表查询-自连接
+
+自连接查询语法
+
+```sql
+select 字段列表 from 表A 别名1 join 表A 别名2 on 条件...;
+```
+
+**自连接查询，可以是内连接查询也可以是外连接查询**
+
+![image-20220214173435647](https://s2.loli.net/2022/02/14/1RsVcG7HtAvPIdJ.png)
+
+```sql
+-- 自连接
+-- 1.查询员工 及其所属领导的名字
+select a.name,b.name from emp a,emp b where a.manager = b.id;
+
+-- 2. 查询所有员工emp 及其领导名字emp,如果员工没有领导，也要查询出来(外连接，内连接只能查查出交集部分）
+select a.name ,b.name from  emp a left outer join emp b on a.manager = b.id;
+```
+
+上述第三行代码结果：![image-20220214173537752](https://s2.loli.net/2022/02/14/AvCQzde9PkEtqZl.png)
+
+第6行代码结果为：![image-20220214173609304](https://s2.loli.net/2022/02/14/54EL81sFnSfmIN3.png)
+
+## p42 -多表查询-联合查询union
+
+联合查询-`union`,`union all`
+
+对于union查询，就是把多次查询的结果合并起来，形成一个新的查询结果集。
+
+语法：
+
+```sql
+select 字段列表 from 表A ...
+union [all]
+select 字段列表 from 表B ...;
+```
+
+演示示例
+
+```sql
+select  * from emp where salary< 50000
+union all
+select * from emp where age > 56;
+```
+
+第一行结果
+
+![image-20220214221433158](https://s2.loli.net/2022/02/14/TQlVyWbYcAnprwD.png)
+
+第3行结果
+
+![image-20220214221500676](https://s2.loli.net/2022/02/14/RwN1kl9Tqjy2K4u.png)
+
+加了`union all`之后联结的结果
+
+![image-20220214221549142](https://s2.loli.net/2022/02/14/LYbXQuv7yg2SZAP.png)
+
+合并后去重去掉关键字all:
+
+```sql
+select  * from emp where salary< 50000
+union 
+select * from emp where age > 56;
+```
+
+结果为：
+
+![image-20220214221730666](https://s2.loli.net/2022/02/14/miCRPnTrzdLaAvu.png)
+
+注意：
+
+- **对于联合查询的多张表的列数必须保持一致，字段类型也需要保持一致。**
+- **union all 会将全部的数据直接合并在一起，union会对合并之后的数据去重。**
+
+## p43 多表查询-子查询
+
+- 概念：SQL语句中嵌套select语句，称为嵌套查询，又称子查询。
+
+```sql
+select * from t1 where column1 = (select column1 from t2);
+```
+
+子查询外部语句可以是`insert / update / delete /select` 的任何一个
+
+- 根据子查询的结果不同，分为：
+
+1. 标量子查询（子查询结果为单个值）
+2. 列子查询（子查询结果为一列）
+3. 行子查询（子查询结果为一行）
+4. 表子查询（子查询结果为多行多列）
+
+- 根据子查询位置，分为：`where`之后，`from`之后，`select`之后；
+
+## P44 多表查询-标量子查询
+
+子查询-标量子查询
+
+子查询结果为单个值（数字、字符串、日期）
+
+常用操作符`=、<>、>、>=、<、<=`；
+
+实例演示
+
+```sql
+-- 标量子查询
+-- ·1.查询研发部的所有员工信息
+-- a.查询研发部部门ID
+-- b.根据研发部部门id
+select * from emp where dept_id = (select id from dept where name = '研发部');
+
+-- 2.查询在庸 入职之后的员工信息
+-- a.查询 庸 的入职日期
+select entrydate from emp where name = '庸';
+
+-- b.查询指定入职日期之后的入职员工信息
+select * from emp where entrydate > (select entrydate from emp where name = '庸');
+```
+
+## p45 多表查询-列子查询
+
+列子查询：子查询结果为一列；
+
+常用的操作符：`in、not in 、any、some、all`
+
+![image-20220214223840561](https://s2.loli.net/2022/02/14/ObchVaCFfrA3I7y.png)
+
+```sql
+-- 列子查询（查询结果为1列）
+-- 1.查询 研发部和总经办的所有员工信息
+-- a.查询 研发部和总经办的部门id
+select id from dept where name in('研发部' , '总经办'); -- 1 -- 5
+
+-- b.根据部门id查询员工信息
+select  * from emp where dept_id in ( 1,5);
+
+-- c. 整体
+select  * from emp where dept_id in (select id from dept where name in('研发部' , '总经办'));
+
+-- 2.查询比财务部所有人工资都高的员工信息
+-- a.查询财务部所有人员工资
+select salary from emp where dept_id = (select id from  dept where name = '财务部');
+
+-- b.比财务部所有人员都高
+
+select * from emp where salary >all (select salary from emp where dept_id = (select id from  dept where name = '财务部'));
+
+-- 3.查询比研发部其中任意一人工资高的员工
+select * from emp where salary > any (select salary from emp where dept_id = (select id from  dept where name = '研发部'));
+```
+
+## p46 多表查询-行子查询
+
+行子查询（子查询结果为一行，可以是多列）
+
+常用操作符为：`=、<>、in、not in `;
+
+演示：
+
+```sql
+-- 行子查询
+-- 1.查询和金f庸薪资及其直属领导相同的员工信息
+-- a.查询金f庸的薪资及其直属领导
+select salary,manager from emp where name = '金f庸'; -- 20000 2
+-- b.查询和金f庸薪资及其直属领导相同的员工信息
+select *from emp where salary = 20000 and manager = 2;
+select * from emp where (salary,manager) = (20000,2);
+
+-- c.整体
+select * from emp where (salary,manager) = (select salary,manager from emp where name = '金f庸');
+```
+
+## p47 多表查询-表子查询
+
+表子查询（子查询结果为多行多列）
+
+常用操作符：`in`
+
+演示：
+
+```sql
+-- 表子查询
+-- 1.查询和’金f庸'，‘金庸’职位和薪资相同的员工信息
+-- a.查询’金f庸'，‘金庸’职位和薪资
+select job , salary from emp where name in ('金f庸','金庸');
+
+-- b .查询相同的员工信息
+select * from emp where (job,salary) in (select job , salary from emp where name in ('金f庸','金庸') );
+
+-- 2.查询入职日期是 2009-01-01之后的员工信息，及其部门信息
+-- a.查询入职日期是2009-01-01之后员工表
+select  * from emp where entrydate > '2009-01-01';
+
+-- b.查询这部分员工，对应的部门信息
+select e.* ,d.* from (select  * from emp where entrydate > '2009-01-01') e left join dept d on e.dept_id = d.id;
+```
+
+## p48 多表查询-练习1
+
+## p49多表查询-练习2
+
+## p50多表查询-小结
+
+1. 多表关系
+
+> 一对多：在多的一方设置外键，关联一的一方的主键；
+>
+> 多对多：建立中间表，中间表包含两个外键，关联两张表的主键；
+>
+> 一对一：用于表结构拆分，在其中任何一方设置外键（unique)，关联另一方的主键；
+
+2. 多表查询
+
+> **内连接**：相当于**查A,B交集**部分数据
+>
+> - 隐式：`select ...from 表A，表B where 条件...`
+> - 显示：`select ...from 表A inner join 表B on 条件... `
+>
+> **外连接**
+>
+> （1）左外连接：查询**左表**所有数据，以及两种表交集部分数据
+>
+> ```sql
+> select ...from 表A left join 表B on 条件...
+> ```
+>
+> （2）右外连接：查询**右表**左右数据，以及两种表交集部分数据
+>
+> ```sql
+> select ...from 表A right join 表B on 条件...
+> ```
+>
+> **自连接**：当前表与自身连接查询，自连接必需使用表别名
+>
+> ```sql
+> select 字段列表 from 表A 别名1 join 表A 别名2 on 条件...;
+> ```
+>
+> **子查询**:标量子查询、列子查询、行子查询、表子查询；
+
+## p51事务-简介
+
+事务简介、事务操作、事务四大特性、并发事务问题、事务隔离级别；
+
+**事务简介**
+
+**事务**：是一组操作的集合，它是一个不可分割的工作单位，事务回吧所有的操作作为一个整体一起向系统提交或撤销操作请求，即这些操作要么**同时成功**，要么**同时失败**；
+
+![image-20220214233840564](https://s2.loli.net/2022/02/14/8QaKd12HyOzlbPF.png)
+
+回滚事务：将之前减少的数据恢复回去
+
+**默认的MySQL的事务是自动提交的，也就是说，当执行一条DML语句，MySQL会立即隐式的提交事务；**
+
+## p52事务-操作演示
+
+事务操作
+
+方式1：
+
+- 查看/设置事务提交方式
+
+```sql
+select @@autocommit; -- 查看事务提交方式，1 自动提交，0 手动提交
+set @@autocommit = 0;
+```
+
+- 提交事务
+
+```sql
+commit
+```
+
+- 回滚事务
+
+```sql
+rollback
+```
+
+方式2：
+
+- 开启事务
+
+
+
+```sql
+start transaction 或者 begin
+```
+
+- 提交事务
+
+```sql
+commit
+```
+
+- 回滚事务
+
+```sql
+rollback
+```
+
+```sql
+create table account(
+    id int auto_increment primary key comment '主键ID',
+    name varchar(10) comment '姓名',
+    money int comment '余额'
+)comment '账户表';
+insert into account values (null,'张三',2000),(null,'李四',2000);
+
+-- 恢复数据
+update account set money = 2000 where name = '张三' or name = '李四';
+
+
+-- 方式1：手动提交设置为0
+select @@autocommit;
+
+set @@autocommit = 0; -- 设置为手动执行
+
+-- 转账操作（张三给李四转账1000）
+-- 1.查询张三账户余额
+select * from account where name = '张三';
+
+-- 2.将张三账户余额减少1000
+update account set money = money - 1000 where name ='张三';
+
+抛出异常...
+
+-- 3.将李四账户的余额+1000
+update account set money = money + 1000 where name ='李四';
+
+-- 提交事务
+commit ;
+
+-- 回滚事务
+rollback ;
+
+
+-- 方式2
+-- 转账操作（张三给李四转账1000）
+
+-- 开启事务
+start transaction ;
+
+-- 1.查询张三账户余额
+select * from account where name = '张三';
+
+-- 2.将张三账户余额减少1000
+update account set money = money - 1000 where name ='张三';
+
+抛出异常...
+
+-- 3.将李四账户的余额+1000
+update account set money = money + 1000 where name ='李四';
+
+-- 提交事务
+commit ;
+
+-- 回滚事务
+rollback ;
+```
+
+## p53 事务-四大特性ACID
+
+事务四大特性
+
+![image-20220215000807130](https://s2.loli.net/2022/02/15/4wctBWdOxZpGMPn.png)
+
+注意理解掌握
+
+## P54 事务-并发事务问题
+
+并发事务问题：A事务和B事务同时操作某个数据库或者某一张表时出现的问题。
+
+![image-20220215001303560](https://s2.loli.net/2022/02/15/cdzRgI2U4KlCkhi.png)
+
+- 脏读
+
+![image-20220215001439215](https://s2.loli.net/2022/02/15/CX9IT6wLNfFSBEK.png)
+
+B事务读取到A还没有提交的数据
+
+- 不可重复读
+
+![image-20220215001648300](https://s2.loli.net/2022/02/15/ESoHWBdpkFUNQRX.png)
+
+事务A执行1操作之后，事务B提交update更新操作，然后事务A执行3操作，两次读到数据不一致
+
+- 幻读
+
+![image-20220215002010804](https://s2.loli.net/2022/02/15/rwLPapQxS1Bkvgt.png)
+
+事务A执行1操作查询id为1的数据，发现没有；然后并发事务B插入id =1 的数据提交到数据库；然后事务A插入id= 1的数据，此时主键重复（冲突），不能插入；但是再次查询select时，发现还是没有数据。
+
+
+
+## p55 事务-并发事务演示及隔离级别
+
+事务隔离级别
+
+![image-20220215002610739](https://s2.loli.net/2022/02/15/WtX6UYsi1dNrVnQ.png)
+
+读未提交（`read uncommitted`)、读已提交(`read committed`)、重复读(`repeatable read`)、串行化(`serializable`)；
+
+```sql
+-- 查看事务隔离级别
+select @@transaction_isolation;
+
+-- 设置事务隔离级别
+set [session | global] transaction isolation level {read uncommited | read commited |repeatable read|serializable}
+```
+
+- `read uncommited`隔离级别
+
+  查询原始数据，并开启事务A；
+
+```sql
+-- 事务A
+mysql> use ithm
+Database changed
+mysql> set session transaction isolation level read uncommitted;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  2000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.01 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+开启事务B；
+
+```sql
+-- B事务
+mysql> use ithm;
+Database changed
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+然后B执行update操作，A在查询：
+
+```sql
+-- B事务
+mysql> update account set money = money - 1000 where name = '张三';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
+
+```sql
+-- A事务
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  2000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+
+-- 中间B执行update操作
+
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  1000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+```
+
+以上发生了脏读：B事务执行了一个更新操作，还没有提交，然而事务A读取到了事务B还没有提交的数据。
+
+此时B事务执行`commit`操作
+
+```sql
+-- B事务
+commit ;
+```
+
+A事务再执行查询，数据没有发生变化。
+
+```sql
+-- A事务
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  1000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.01 sec)
+```
+
+- `read commited`解决脏读问题
+
+  设置事务A的隔离级别为`read commited`
+
+  ```sql
+  -- 事务A
+  mysql> set session transaction isolation level read committed;
+  Query OK, 0 rows affected (0.00 sec)
+  mysql> start transaction;
+  Query OK, 0 rows affected (0.00 sec)
+  mysql> select * from account;
+  +----+------+-------+
+  | id | name | money |
+  +----+------+-------+
+  |  1 | 张三 |  1000 |
+  |  2 | 李四 |  2000 |
+  +----+------+-------+
+  2 rows in set (0.00 sec)
+  ```
+
+  事务B 开启事务，再次执行修改张三余额的指令
+
+  ```sql
+  -- 事务B
+  mysql> start transaction;
+  Query OK, 0 rows affected (0.00 sec)
+  
+  mysql> update account set money = money - 1000 where name = '张三';
+  Query OK, 1 row affected (0.01 sec)
+  Rows matched: 1  Changed: 1  Warnings: 0
+  ```
+
+  此时事务A再次查询，没有发生变化
+
+  ```sql
+  -- 事务A
+  mysql> select * from account;
+  +----+------+-------+
+  | id | name | money |
+  +----+------+-------+
+  |  1 | 张三 |  1000 |
+  |  2 | 李四 |  2000 |
+  +----+------+-------+
+  2 rows in set (0.00 sec)
+  ```
+
+  然后，将事务B提交
+
+```sql
+-- 事务B
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+此时，再次事务A再次查询，现在张三余额才发生减少，因此`read commit `可以避免脏读问题发生
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |     0 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.01 sec)
+```
+
+- `read commit `不可重复读问题
+
+开启事务A
+
+```sql
+-- 事务A
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+开启事务B
+
+```sql
+-- 事务B
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+然后事务A查询余额
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |     0 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+```
+
+事务B ，对张三余额增加1000
+
+```sql
+-- 事务B
+mysql> update account set money = money + 1000 where name = '张三';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
+
+事务A再次查询余额，余额没有发生变化
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |     0 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+```
+
+事务B提交
+
+```sql
+-- 事务B
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+事务A再次查询余额，可以查询到增加了1000；
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  1000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.01 sec)
+```
+
+事务A中查询第一次和第二次数据一样，第二次和第三次数据不一样，同一个SQL在一个事务中查到的数据不一样，发生不可重复读问题；
+
+- `repeatable read`
+
+  事务A设置为`repeatable read` 并且开启事务
+
+```sql
+-- 事务A
+mysql> set session transaction isolation level repeatable read;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+开启事务B
+
+```sql
+-- 事务B
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+事务A查询余额
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  2000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+```
+
+事务B执行更新操作,并且提交
+
+```sql
+-- 事务B
+mysql> update account set money = money - 1000 where name = '张三';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+事务A，查询余额，结果一样没有发生变化（可重复读）；
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  2000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.01 sec)
+```
+
+事务A提交之后，并且查询余额，发生变化；
+
+```sql
+-- 事务A
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  1000 |
+|  2 | 李四 |  2000 |
++----+------+-------+
+2 rows in set (0.00 sec)
+```
+
+`repeatable read`解决了不可重复读问题。
+
+- `repeatable read`幻读问题
+
+事务A开启
+
+```sql
+-- 事务A
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+事务B开启
+
+```sql
+-- 事务B
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+事务A查询数据（id为3）
+
+```sql
+-- 事务A
+mysql> select * from account where id = 3;
+Empty set (0.00 sec)
+
+```
+
+事务B插入id=3的数据，并且提交
+
+```sql
+-- 事务B
+mysql> insert into account(id,name,money) values (3,'王五',2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+事务A再次插入id为3的数据，发生主键冲突；
+
+```sql
+-- 事务A
+mysql>  insert into account(id,name,money) values (3,'大岛王五',2000);
+ERROR 1062 (23000): Duplicate entry '3' for key 'account.PRIMARY'
+```
+
+事务A再次查询主键为3的数据，还是没有数据
+
+```sql
+-- 事务A
+mysql> select * from account where id = 3;
+Empty set (0.00 sec)
+```
+
+因此`repeatable read`会发生幻读的现象。
+
+最后事务A提交
+
+```sql
+-- 事务A
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+- `serializable`解决幻读问题
+
+事务A，设置事务，并开启
+
+```sql
+-- 事务A
+mysql> set session transaction isolation level serializable;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+```
+
+开启事务B
+
+```sql
+-- 事务B
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+事务A查询数据
+
+```sql
+-- 事务A
+mysql> select * from account;
++----+------+-------+
+| id | name | money |
++----+------+-------+
+|  1 | 张三 |  1000 |
+|  2 | 李四 |  2000 |
+|  3 | 王五 |  2000 |
++----+------+-------+
+3 rows in set (0.00 sec)
+```
+
+事务A查询id为4的数据，发现没有
+
+```sql
+-- 事务A
+mysql> select * from account where id = 4;
+Empty set (0.00 sec)
+```
+
+事务B插入id为4的数据
+
+```sql
+-- 事务B
+ mysql> insert into account(id,name,money) values (4,'王五儿',2000);
+ 此时光标一直闪，阻塞,因为事务A在操作，就要等待事务A操作完成之后才能操作
+```
+
+![image-20220215014933330](https://s2.loli.net/2022/02/15/KlxXRbwEO1TZ86g.png)
+
+然后事务A插入id为4的数据，并且提交
+
+```sql
+-- 事务A
+mysql> insert into account(id,name,money) values (4,'王五儿',2000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+```
+
+此时事务B中提示，主键冲突
+
+```sql
+-- 事务B
+mysql> insert into account(id,name,money) values (4,'王五儿',2000);
+ERROR 1062 (23000): Duplicate entry '4' for key 'account.PRIMARY'
+```
+
+最后事务B提交
+
+```sql
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+```
+
+`因此serializable`解决幻读问题，每次只允许一个事务操作，只有当A事务完成之后事务B才能操作，但是性能最差。
+
+注意：**事务隔离级别越高，数据越安全，但是性能越低。**
+
+## p56 事务-小结
+
+1. 事务简介
+
+**事务**：是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系统提交或撤销操作请求，即这些操作要么**同时成功**，要么**同时失败**；
+
+2. 事务操作
+
+```sql
+start transaction; -- 开启事务
+commit/ rollback; -- 提交/回滚事务
+```
+
+3. 事务四大特性
+
+> 原子性，一致性，隔离性，持久性
+
+4. 并发事务问题
+
+> 脏读，不可重复读，幻读
+
+5. 事务的隔离级别
+
+> 读未提交（`read uncommitted`)、读已提交(`read committed`)、重复读(`repeatable read`)、串行化(`serializable`)；
+
+## p57 基础篇总结
+
+1. MySQL概述
+
+2. SQL语句（DDL,DML,DQL,DCL),软件开发（DDL,DML,DQL)
+3. 函数
+4. 约束（主键约束、非空约束、默认约束、唯一约束，外键约束）
+5. 多表查询（多表关系等）
+6. 事务（事务概念、四大特性、并发事务问题、事务隔离级别）
+

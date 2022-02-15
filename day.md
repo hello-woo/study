@@ -227,3 +227,8 @@ vector<vector<int>>pumute(vector<int>&nums){
 (1) 完成黑马程序员MySQL数据库入门到精通的p1-p32
 
 (2) 完成每日一题打卡，后续补充codetop3题打卡
+
+# 2022/02/14- 2022/02/15
+
+(1) 完成黑马程序员MySQL数据库入门到精通的p33-p88
+(2)完成codetop几道题的练习。
