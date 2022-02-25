@@ -27,6 +27,8 @@ IEEE transactions on industrial informatics
 
 2022/02/13 Assigning Reviewers
 
+2022/02/24 Assign additional Reviewers
+
 # 2022/01/23
 通过PLC完成了电机x,y轴的点动前进和后退
 
@@ -231,4 +233,18 @@ vector<vector<int>>pumute(vector<int>&nums){
 # 2022/02/14- 2022/02/15
 
 (1) 完成黑马程序员MySQL数据库入门到精通的p33-p88
+
 (2)完成codetop几道题的练习。
+
+# 2022/02/15 - 2022/02/19
+
+(1)完成所有黑马数据库学习
+
+(2)整理linux服务器项目学习
+
+# 2022/02/19 - 2022/02/24
+(1)整理项目相关问题，懂了信号、锁、线程池及项目运行流程
+
+(2)复习有关面经知识，刷了每日一题
+
+# 

@@ -1,0 +1,14 @@
+/home/zzc/cmake_project/t4/build/CMakeFiles/install.dir
+/home/zzc/cmake_project/t4/build/CMakeFiles/list_install_components.dir
+/home/zzc/cmake_project/t4/build/CMakeFiles/install/strip.dir
+/home/zzc/cmake_project/t4/build/CMakeFiles/install/local.dir
+/home/zzc/cmake_project/t4/build/CMakeFiles/rebuild_cache.dir
+/home/zzc/cmake_project/t4/build/CMakeFiles/edit_cache.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/install.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/list_install_components.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/rebuild_cache.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/edit_cache.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/hello.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/hello_static.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/install/strip.dir
+/home/zzc/cmake_project/t4/build/lib/CMakeFiles/install/local.dir

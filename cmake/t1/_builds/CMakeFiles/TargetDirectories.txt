@@ -1,0 +1,3 @@
+/home/zzc/cmake_project/t1/_builds/CMakeFiles/edit_cache.dir
+/home/zzc/cmake_project/t1/_builds/CMakeFiles/rebuild_cache.dir
+/home/zzc/cmake_project/t1/_builds/CMakeFiles/hello.dir

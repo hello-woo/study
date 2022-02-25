@@ -1,0 +1,4 @@
+/usr/local/doc/cmake_project/t3/copyright
+/usr/local/doc/cmake_project/t3/readme
+/usr/local/bin/runhello.sh
+/usr/local/doc/cmake_project/t3/hello.txt
