@@ -8,9 +8,8 @@ public:
     //无参构造
     smart_ptr():_count(0),_ptr((T*)(0)){}
     //有参构造
-    smart_ptr(T* ptr = nullptr){
+    smart_ptr(T* ptr = nullptr):_ptr(ptr){
         if(ptr){
-            _ptr = ptr;
             _count = new int(0);
             ++(*_count);
         }
@@ -101,11 +100,31 @@ int main() {
     p2 = p1;  
     cout << "p2 use count" << p2.get_use_count() <<endl;
 
-    smart_ptr<int>p3(new int(2));
+    smart_ptr<string>p4(new string("abc"));
 
-    p3 = p1;
-    cout << "p3 use count " << p3.get_use_count() << endl;
+    cout << "p4 use count "<< p4.get_use_count() << endl;
+
+    smart_ptr<string>p5(p4);
+
+    cout << "p4 use count " << p4.get_use_count() <<endl;
+    cout << "p5 use count " << p5.get_use_count() << endl;
 
     return 0;  
 } 
+
+/*
+Constructor is succeed!
+p1 use count 1
+Copy constructor is succeed!
+p2 use count 2
+Assignment operator overloaded is succeed!
+p2 use count2
+Constructor is succeed!
+p4 use count 1
+Copy constructor is succeed!
+p4 use count 2
+p5 use count 2
+Destructor is succeed!
+Destructor is succeed
+*/
 
