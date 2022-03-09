@@ -1,4 +1,14 @@
 #include<bits/stdc++.h>
+/*
+1.一个模板T* ptr,指向实际的对象
+2. 一个引用次数（必须new出来，不然会导致多个shared_ptr里面会有不同的引用次数而导致多次delete
+3. 重载operator *和 operator->,使得像指针一样使用shared_ptr；
+4. 重载copy constructor ，使其引用次数加1;
+5. 重载operator= ,如果原来shared_ptr已经有对象，则让其引用计数减一判断是为零（为0，delete）
+6. 重载析构函数，使引用次数减1,并判断引用是否为零(为零，调用delete)
+*/
+
+
 
 using namespace std;
 
@@ -39,6 +49,10 @@ public:
 
     T& operator*() const{
         return *_ptr;
+    }
+
+    operator bool(){
+        return _ptr != nullptr;
     }
 
     //重载operator= 
