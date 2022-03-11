@@ -9,7 +9,8 @@
 using namespace std;
 
 void HeapAdjust(int *arr,int n,int i){
-    int smallest=i;
+    if(i >= n) return;
+    int smallest = i;
     int l=2*i+1;
     int r=2*i+2;
     if(l<n&&arr[l]<arr[smallest]) smallest=l;
@@ -22,12 +23,15 @@ void HeapAdjust(int *arr,int n,int i){
 }
 
 void HeapSort(int *arr,int n){
+    //建堆，最后一个父节点开始，自下而上建堆，
+    //长度为n,从0开始，最后一个为n-1,其父节点为(n - 1 -1)/2 = n / 2 -1
     for(int i=n/2-1;i>=0;i--) {
         HeapAdjust(arr,n,i);
     }
+    //每次将堆顶元素和最后一个元素互换，然后将最后一个元素砍掉
     for(int i=n-1;i>=0;i--){
         swap(arr[0],arr[i]);
-        HeapAdjust(arr,i,0);
+        HeapAdjust(arr,i,0);//每次对堆顶自下而上开始调整
     }
 }
 
