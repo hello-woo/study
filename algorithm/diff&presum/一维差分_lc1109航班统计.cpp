@@ -32,6 +32,8 @@ preSum:
 
 vector<int> corpFlightBooking(vector<vector<int>>& booking ,int n){
     vector<int>ans(n,0);
+
+    //起始状态差分矩阵都为0，所以不用初始化
     for(int i = 0 ;i < booking.size();i++){
         int left = booking[i][0] - 1;
         int right = booking[i][1] - 1;
