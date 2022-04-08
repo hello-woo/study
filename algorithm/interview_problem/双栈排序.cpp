@@ -33,3 +33,34 @@ int main(){
     }
     return 0;
 }
+
+// //最小的先弹栈
+// stack<int> stack_sort(stack<int>& sta){
+//     stack<int>temp;
+//     while(!sta.empty()){
+//         int topval = sta.top();
+//         sta.pop();
+//         while(!temp.empty() && topval > temp.top()){
+//             int t = temp.top();
+//             temp.pop();
+//             sta.push(t);
+//         }
+//         temp.push(topval);
+//     }
+//     return temp;
+// }
+
+// int main(){
+//     stack<int>ori;
+//     ori.push(4);
+//     ori.push(5);
+//     ori.push(2);
+//     ori.push(3);
+//     ori.push(1);
+//     stack<int>res = stack_sort(ori);
+//     while(!res.empty()){
+//         cout << res.top() << " ,";
+//         res.pop();
+//     }
+//     return 0;
+// }
