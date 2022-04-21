@@ -29,6 +29,10 @@ IEEE transactions on industrial informatics
 
 2022/02/24 Assign additional Reviewers
 
+2022/04/11 email to lisa 
+
+2022/04/14 Awaiting Review Scores
+
 # 2022/01/23
 通过PLC完成了电机x,y轴的点动前进和后退
 

@@ -38,7 +38,7 @@ int binary_search_first(int* arr,int n,int val){
     int l = 0,r= n - 1;
     while(l < r){
         int mid = (l + r) / 2;
-        //如果实在满足条件为1的一便
+        //如果是在满足条件为1的一边
         if(arr[mid] >= val){
             r = mid;
         }else{
@@ -53,6 +53,6 @@ int main(){
     int arr1[] = {1,2,3,5,6,7};
     cout << binary_search(arr1,7,3)<<endl;
     cout << binary_search_first(arr,7,3)<<endl;
-    cout << binary_search_last(arr,7,3)<<endl;
+    cout << binary_search_last(arr,7,4)<<endl;
     return 0;
 }
