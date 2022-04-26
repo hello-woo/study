@@ -38,14 +38,14 @@ public:
                 l++;
             }
 
-            //
+            r++;
+
             if(cnt == t.size()){
                 //cout << "r :" << r << " l:" <<l <<endl;
-                if(ans.empty() || r - l + 1 < ans.size()){
-                    ans = s.substr(l,r - l + 1);
+                if(ans.empty() || r - l < ans.size()){
+                    ans = s.substr(l,r - l);
                 }
             }
-            r++;
         }
         return ans;
     }
