@@ -19,6 +19,7 @@ ull quick_mod(ull a,ull b,ull p){
     return ans;
 }
 
+
 int main(){
     cout << quick_mod(3,9,47) << endl;
     return 0;
