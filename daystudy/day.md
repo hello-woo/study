@@ -11,7 +11,8 @@
 --------------------------------------
 zzc 密码：12345678
 
-```IEEE transactions on industrial informatics
+```
+IEEE transactions on industrial informatics
 
 2022/01/17 submited awaiting co-eic assignment
 
