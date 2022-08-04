@@ -11,8 +11,7 @@
 --------------------------------------
 zzc 密码：12345678
 
-IEEE transactions on industrial informatics
-ieee transactions on industrial informatics
+```IEEE transactions on industrial informatics
 
 2022/01/17 submited awaiting co-eic assignment
 
@@ -39,8 +38,7 @@ ieee transactions on industrial informatics
 2022/06/27 major reversion
 
 2022/08/03/ submitted revision(Inviting reviewers)
-
-
+```
 # 2022/01/23
 通过PLC完成了电机x,y轴的点动前进和后退
 
