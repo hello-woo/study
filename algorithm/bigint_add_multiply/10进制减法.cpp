@@ -19,10 +19,10 @@ string do_sub(string s1,string s2){
     reverse(ans.begin(),ans.end());
     //去除前导零
     int pos;
-    for(pos = 0 ;pos < res.size() - 1;pos++){
-        if(res[pos] !='0') break;
+    for(pos = 0 ;pos < ans.size() - 1;pos++){
+        if(ans[pos] !='0') break;
     }
-    return res.substr(pos);
+    return ans.substr(pos);
 }
 
 bool cmp(string s1,string s2){
