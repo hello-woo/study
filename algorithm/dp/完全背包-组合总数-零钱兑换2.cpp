@@ -43,6 +43,30 @@ using namespace std;
 
 using namespace std;
 
+class Solution {
+public:
+    int change(int amount, vector<int>& coins) {
+        int ans = 0;
+        vector<int>dp(amount + 1,0);
+        dp[0] = 1;
+//求排列数,先遍历背包容量，后遍历物品
+#if 0
+        for(int i = 0 ; i <= amount;i++){
+            for(int j = 0 ; j < coins.size();j++){
+                if(i >= coins[j]) dp[i] += dp[i - coins[j]];
+            }
+        }
+#endif
+//求组合数，先遍历物品，后遍历背包容量
+        for(int i = 0 ;i < coins.size();i++){
+            for(int j = coins[i];j <= amount ;j++){
+                dp[j] += dp[j - coins[i]];
+            }
+        }
+        return dp[amount] == 0 ? 0 : dp[amount];
+    }
+};
+
 int money[4] = { 1,2,5,10 };
 
 int main() {
